@@ -1,0 +1,96 @@
+html {
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #f8f9fa;
+}
+
+h1, h2 {
+    font-weight: 600;
+}
+
+.text-primary {
+    color: #007bff !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.text-secondary {
+    color: #343a40 !important;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #495057;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.6rem 1.5rem;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.container {
+    padding-top: 3rem;
+}
+
+.card-body a {
+    text-decoration: none;
+}
+
+.row {
+    margin-top: 2rem;
+}
+
+.alert {
+    font-size: 1.1rem;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.alert-success {
+    background-color: #28a745;
+    color: white;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+}
