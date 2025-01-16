@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Database.Model
 {
@@ -9,10 +10,12 @@ namespace Database.Model
         [Required]
         public string? Name { get; set; }
         [Required]
-        public int CarCategoryId { get; set; }
+        public string Locality { get; set; }
         [Required]
-        public double LetestPrice { get; set; }
+        public float LatestPrice { get; set; }
         [Required]
         public bool IsBooked { get; set; }
+        [Required]
+        public float Duration { get; set; }
     }
 }

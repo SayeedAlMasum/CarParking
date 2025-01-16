@@ -9,17 +9,20 @@ namespace Business.Services
         CarParkingContext carParkingContext = new CarParkingContext();
         public Result Add(Role user)
         {
-            //logics
+            // Assuming logic for adding role
+            bool isSuccess = true; // Determine if operation was successful
             return new Result().DBCommit(carParkingContext, "Save Successfully!", null, user);
         }
         public Result Update(Role user)
         {
-            //logics
+            // Assuming logic for updating role
+            bool isSuccess = true; // Determine if operation was successful
             return new Result().DBCommit(carParkingContext, "Updated Successfully!", null, user);
         }
         public Result List()
         {
-            //logics
+            // Assuming logic for listing roles
+            bool isSuccess = true; // Determine if operation was successful
             return new Result().DBCommit(carParkingContext, "Updated Successfully!", null);
         }
     }

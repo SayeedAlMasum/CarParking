@@ -1,0 +1,82 @@
+﻿@* Slot.cshtml *@
+@page
+@model Web.Pages.SlotModel
+
+<h2>Available Slots</h2>
+
+<!-- Form to Add a New Slot -->
+<h3>Add New Slot</h3>
+<form method="post">
+    <div class="form-group">
+        <label for="Slot Id">Slot Id</label>
+        <input type="number" id="Slot Id" asp-for="Slot.SlotId" class="form-control" required />
+        <span asp-validation-for="Slot.SlotId" class="text-danger"></span>
+
+    <div class="form-group">
+        <label for="Title">Title</label>
+            <input type="text" id="Name" asp-for="Slot.Name" class="form-control" required />
+            <span asp-validation-for="Slot.Name" class="text-danger"></span>
+    </div>
+        <div class="form-group">
+            <label for="Locality">Locality</label>
+            <select id="Locality" asp-for="Slot.Locality" class="form-control" required>
+                <option value="" disabled selected>Select a locality</option>
+                <option value="Gulshan Area">Gulshan Area</option>
+                <option value="Dhanmondi">Dhanmondi</option>
+                <option value="Mirpur">Mirpur</option>
+                <option value="Badda">Badda</option>
+                <option value="Motijheel">Motijheel</option>
+                <option value="Banani">Banani</option>
+            </select>
+            <span asp-validation-for="Slot.Locality" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Latest Price">Latest Price</label>
+            <input type="number" id="Latest Price" asp-for="Slot.LatestPrice" class="form-control" required />
+            <span asp-validation-for="Slot.LatestPrice" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="IsBooked">Is Booked Slot?</label>
+            <input type="checkbox" id="IsBooked" asp-for="Slot.IsBooked" class="form-check-input" />
+            <span asp-validation-for="Slot.IsBooked" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+<hr />
+
+<!-- List of Available Slots -->
+<h2>Available Slots</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+           
+            <th>Slot Id</th>
+            <th>Locality</th>
+            <th>Name</th>
+            <th>Latest Price</th>
+            <th>Operation</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Slots?.Any() ?? false)
+        {
+            @foreach (var item in Model.Slots)
+            {
+                <tr>
+                    <td>@item.SlotId</td>
+                    <td>@item.Name</td>
+                    <td>@item.Locality</td>
+                    <td>@item.LatestPrice</td>
+                    <td>@item.IsBooked</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center">No slots available.</td>
+            </tr>
+        }
+    </tbody>
+</table>

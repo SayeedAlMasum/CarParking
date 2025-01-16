@@ -1,10 +1,25 @@
-﻿namespace Database.Model
+﻿//Payment.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace Database.Model
 {
-    public class Payment : BaseModel
+    public class Payment
     {
-        public string PaymentId { get; set; } = Guid.NewGuid().ToString();
-        public string? SlotBookId { get; set; }
-        public double Amount { get; set; }
-        public int PaymentMethodId { get; set; }
+        [Key]
+        public string PaymentId { get; set; }= Guid.NewGuid().ToString();
+        [Required]
+        public int SlotId { get; set; }
+
+        [Required]
+        public string Amount { get; set; }
+        [Required]
+        public string UserInfoId { get; set; }
+
+        [Required]
+        public string PaymentStatus { get; set; } = "Pending";
+
+        public string? CardNumber { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public string? CVV { get; set; }
     }
 }
