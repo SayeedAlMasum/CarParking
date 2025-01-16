@@ -1,13 +1,14 @@
-﻿@* LogIn.cshtml *@
+﻿@* Register.cshtml *@
 @page
-@model Web.Pages.LogInModel
-@{
-    ViewData["Title"] = "Log In";
-}
+@model Web.Pages.RegisterModel
 
-<h2>Log In</h2>
-
-<form method="post">
+<h2>Register</h2>
+<form method="post" asp-page-handler="Register">
+    <div class="form-group">
+        <label for="FullName">Full Name</label>
+        <input type="text" id="FullName" asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
     <div class="form-group">
         <label for="Email">Email</label>
         <input type="email" id="Email" asp-for="Email" class="form-control" />
@@ -18,13 +19,5 @@
         <input type="password" id="Password" asp-for="Password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Log In</button>
+    <button type="submit" class="btn btn-primary">Register</button>
 </form>
-
-<div>
-    <p>Don't have an account? <a asp-page="/Register">Register here</a>.</p>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

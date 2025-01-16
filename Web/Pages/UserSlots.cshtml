@@ -1,62 +1,57 @@
-﻿﻿@* UserSlot.cshtml *@
+﻿@* UserSlots.cshtml *@
 @page
 @model Web.Pages.UserSlotsModel
 
-<h2>Available Slots</h2>
+<div class="container">
+    <h2>Available Slots</h2>
 
-<!-- Search Box for User -->
-<div class="form-group">
-    <label for="search">Search Slots</label>
-    <input type="text" id="search" class="form-control" placeholder="Search for a slot..." onkeyup="filterCourses()" />
-</div>
+    <!-- Search Box for User -->
+    <div class="form-group">
+        <label for="search">Search Slots</label>
+        <input type="text" id="search" class="form-control" placeholder="Search for a slot..." onkeyup="filterSlots()" />
+    </div>
 
-<!-- List of Available Courses -->
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Slot Id</th>
-            <th>Locality</th>
-            <th>Name</th>
-            <th>Latest Price</th>
-            <th>Is Booked</th>
-            <th>Operation</th>
-
-        </tr>
-    </thead>
-    <<tbody id="slotTableBody">
->
-        @if (Model.Slots?.Any() ?? false)
-        {
-        @foreach (var item in Model.Slots)
+    <!-- List of Available Slots -->
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Slot ID</th>
+                <th>Locality</th>
+                <th>Name</th>
+                <th>Latest Price</th>
+                <th>Is Booked</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody id="slotTableBody">
+            @if (Model.Slots?.Any() ?? false)
             {
-        <tr>
-            <td>@item.SlotId </td>
-            <td>@item.Locality</td>
-            <td>@item.Name</td>
-            <td>@item.LatestPrice</td>
-            <td>@item.IsBooked</td>
-            <td>
-                @if (item.IsBooked)
-                        {
-                <a asp-page="/Payment" asp-route-courseId="@item.SlotId" class="btn btn-warning btn-sm">Payment</a>
-                        }
-                        else
-                        {
-                <a asp-page="/Payment" asp-route-courseId="@item.SlotId" class="btn btn-primary btn-sm">Payment</a>
-                        }
-            </td>
-        </tr>
+                @foreach (var item in Model.Slots)
+                {
+                    <tr>
+                        <td>@item.SlotId</td>
+                        <td>@item.Locality</td>
+                        <td>@item.Name</td>
+                        <td>@item.LatestPrice</td>
+                        <td>@item.IsBooked ?</td>
+                        <td>
+                            <a asp-page="/Payment" asp-route-slotId="@item.SlotId"
+                               class="btn btn-sm @(item.IsBooked ? "btn-warning" : "btn-primary")">
+                                Payment
+                            </a>
+                        </td>
+                    </tr>
+                }
             }
-        }
-        else
-        {
-        <tr>
-            <td colspan="4" class="text-center">No slots available.</td>
-        </tr>
-        }
-    </tbody>
-</table>
-
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No slots available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <script>
     function filterSlots() {
@@ -64,12 +59,17 @@
         const rows = document.querySelectorAll("#slotTableBody tr");
 
         rows.forEach(row => {
-            const slotId = row.querySelector("td:first-child").textContent.toLowerCase();
-            const name = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
-            const locality = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
-            const latestPrice = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+            const slotId = row.querySelector("td:nth-child(1)")?.textContent.toLowerCase() || "";
+            const locality = row.querySelector("td:nth-child(2)")?.textContent.toLowerCase() || "";
+            const name = row.querySelector("td:nth-child(3)")?.textContent.toLowerCase() || "";
+            const latestPrice = row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() || "";
 
-            if (slotId.includes(searchInput) || name.includes(searchInput) || locality.includes(searchInput) || latestPrice.includes(searchInput)) {
+            if (
+                slotId.includes(searchInput) ||
+                locality.includes(searchInput) ||
+                name.includes(searchInput) ||
+                latestPrice.includes(searchInput)
+            ) {
                 row.style.display = "";
             } else {
                 row.style.display = "none";

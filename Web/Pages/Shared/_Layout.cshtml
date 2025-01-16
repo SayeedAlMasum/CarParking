@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Car Parking Management</title>
+    <title>@ViewData["Title"] - Car Parking</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Layout.css" asp-append-version="true" />
@@ -27,12 +27,20 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Slot">Slots</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/UserSlot">Parking Slot</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/UserSlots">Parking Slot</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                         
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/LogIn">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/Register">Register</a>
+                        </li>
                     </ul>
                 </div>
             </div>

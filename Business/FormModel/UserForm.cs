@@ -9,6 +9,8 @@ namespace Business.FormModel
 {
     public class UserForm
     {
+        [Required]
+        public string? UserInfoId { get; set; }
         [Required, MaxLength(40)]
         public string? FullName { get; set; }
         [Required]

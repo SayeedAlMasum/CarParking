@@ -21,7 +21,7 @@ namespace BusinessTest
             userForm.FullName = Console.ReadLine();
             userForm.Email = Console.ReadLine();
             userForm.Password = Console.ReadLine();
-            Result result = new UserService().Registration(userForm);
+            Result result = new UserInfoService().Registration(userForm);
             Console.WriteLine(result.Message);
         }
         static void LoginTest()
@@ -31,17 +31,17 @@ namespace BusinessTest
             loginForm.Email = Console.ReadLine();
             Console.WriteLine("Password");
             loginForm.Password = Console.ReadLine();
-            Result result = new UserService().Login(loginForm);
+            Result result = new UserInfoService().Login(loginForm.Email, loginForm.Password);
             Console.WriteLine(result.Message);
         }
         static void UserListTest()
         {
-            Result result = new UserService().List();
+            Result result = new UserInfoService().List();
 
         }
         static void UserTest()
         {
-            Result result = new UserService().Single("UserId");
+            Result result = new UserInfoService().Single("UserId");
 
         }
     }

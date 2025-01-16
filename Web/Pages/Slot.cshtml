@@ -2,6 +2,12 @@
 @page
 @model Web.Pages.SlotModel
 
+<!-- Search Box -->
+<div class="form-group">
+    <label for="search">Search Slots</label>
+    <input type="text" id="search" class="form-control" placeholder="Search for a slot..." onkeyup="filterSlots()" />
+</div>
+
 <h2>Available Slots</h2>
 
 <!-- Form to Add a New Slot -->
@@ -11,12 +17,12 @@
         <label for="Slot Id">Slot Id</label>
         <input type="number" id="Slot Id" asp-for="Slot.SlotId" class="form-control" required />
         <span asp-validation-for="Slot.SlotId" class="text-danger"></span>
-
-    <div class="form-group">
-        <label for="Title">Title</label>
+     </div>
+        <div class="form-group">
+            <label for="Name">Name</label>
             <input type="text" id="Name" asp-for="Slot.Name" class="form-control" required />
             <span asp-validation-for="Slot.Name" class="text-danger"></span>
-    </div>
+        </div>
         <div class="form-group">
             <label for="Locality">Locality</label>
             <select id="Locality" asp-for="Slot.Locality" class="form-control" required>
@@ -34,23 +40,24 @@
             <label for="Latest Price">Latest Price</label>
             <input type="number" id="Latest Price" asp-for="Slot.LatestPrice" class="form-control" required />
             <span asp-validation-for="Slot.LatestPrice" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="IsBooked">Is Booked Slot?</label>
+        </div>
+        <div class="form-group">
+            <label for="IsBooked">Is Booked Slot?</label>
             <input type="checkbox" id="IsBooked" asp-for="Slot.IsBooked" class="form-check-input" />
             <span asp-validation-for="Slot.IsBooked" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-success">Save</button>
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
 </form>
 
 <hr />
+
+
 
 <!-- List of Available Slots -->
 <h2>Available Slots</h2>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-           
             <th>Slot Id</th>
             <th>Locality</th>
             <th>Name</th>
@@ -58,25 +65,51 @@
             <th>Operation</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="slotTableBody">
         @if (Model.Slots?.Any() ?? false)
         {
-            @foreach (var item in Model.Slots)
+            @foreach (var slot in Model.Slots)
             {
                 <tr>
-                    <td>@item.SlotId</td>
-                    <td>@item.Name</td>
-                    <td>@item.Locality</td>
-                    <td>@item.LatestPrice</td>
-                    <td>@item.IsBooked</td>
+                    <td>@slot.SlotId</td>
+                    <td>@slot.Locality</td>
+                    <td>@slot.Name</td>
+                    <td>@slot.LatestPrice</td>
+                    <td>@slot.IsBooked ?</td>
                 </tr>
             }
         }
         else
         {
             <tr>
-                <td colspan="3" class="text-center">No slots available.</td>
+                <td colspan="5" class="text-center">No slots available.</td>
             </tr>
         }
     </tbody>
+
 </table>
+
+<script>
+    function filterSlots() {
+        const searchInput = document.getElementById("search").value.toLowerCase();
+        const rows = document.querySelectorAll("#slotTableBody tr");
+
+        rows.forEach(row => {
+            const slotId = row.querySelector("td:nth-child(1)")?.textContent.toLowerCase() || "";
+            const locality = row.querySelector("td:nth-child(2)")?.textContent.toLowerCase() || "";
+            const name = row.querySelector("td:nth-child(3)")?.textContent.toLowerCase() || "";
+            const latestPrice = row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() || "";
+
+            if (
+                slotId.includes(searchInput) ||
+                locality.includes(searchInput) ||
+                name.includes(searchInput) ||
+                latestPrice.includes(searchInput)
+            ) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+</script>
