@@ -54,8 +54,9 @@
 </div>
 
 <script>
+    // Filters the slots table based on search input
     function filterSlots() {
-        const searchInput = document.getElementById("search").value.toLowerCase();
+        const searchInput = document.getElementById("search").value.toLowerCase().trim();
         const rows = document.querySelectorAll("#slotTableBody tr");
 
         rows.forEach(row => {
@@ -64,16 +65,40 @@
             const name = row.querySelector("td:nth-child(3)")?.textContent.toLowerCase() || "";
             const latestPrice = row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() || "";
 
-            if (
+            // Check if the row matches the search input
+            const isMatch =
                 slotId.includes(searchInput) ||
                 locality.includes(searchInput) ||
                 name.includes(searchInput) ||
-                latestPrice.includes(searchInput)
-            ) {
-                row.style.display = "";
+                latestPrice.includes(searchInput);
+
+            // Show or hide the row based on the match
+            row.style.display = isMatch ? "" : "none";
+
+            // Highlight matched text in the visible rows
+            if (isMatch && searchInput) {
+                highlightText(row, searchInput);
             } else {
-                row.style.display = "none";
+                clearHighlight(row);
             }
+        });
+    }
+
+    // Highlights the matching text in a row
+    function highlightText(row, searchInput) {
+        const cells = row.querySelectorAll("td");
+        cells.forEach(cell => {
+            const originalText = cell.textContent || "";
+            const regex = new RegExp(`(${searchInput})`, "gi");
+            cell.innerHTML = originalText.replace(regex, '<span style="background-color: yellow;">$1</span>');
+        });
+    }
+
+    // Clears any highlights in a row
+    function clearHighlight(row) {
+        const cells = row.querySelectorAll("td");
+        cells.forEach(cell => {
+            cell.innerHTML = cell.textContent; // Reset to original text
         });
     }
 </script>

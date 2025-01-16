@@ -11,7 +11,7 @@ namespace Database.Model
         public int SlotId { get; set; }
 
         [Required]
-        public string Amount { get; set; }
+        public float Amount { get; set; }
         [Required]
         public string UserInfoId { get; set; }
 
