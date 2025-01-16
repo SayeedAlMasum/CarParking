@@ -7,100 +7,92 @@ namespace Business.Services
 {
     public class UserInfoService
     {
-        private readonly CarParkingContext _carParkingContext;
-
-        public UserInfoService()
-        {
-            _carParkingContext = new CarParkingContext();
-        }
 
         public Result Registration(UserForm user)
         {
-            try
-            {
-                // Check if the email is already registered
-                bool isEmailRegistered = _carParkingContext.UserInfo.Any(u => u.Email == user.Email);
-                if (isEmailRegistered)
-                    return new Result(false, "Email already registered!");
+            // Initialize the database context
+            CarParkingContext carParkingContext = new CarParkingContext();
 
-                // Map UserForm to UserInfo model
-                var userInfo = new UserInfo
+            // Check if the email is already registered
+            bool x = carParkingContext.UserInfo.Any(x => x.Email == user.Email);
+            if (x) return new Result(false, "Email already registered!");
+
+            // Create a new user object and populate its properties
+                UserInfo userInfo = new UserInfo();
+                userInfo.FullName = user.FullName;
+                userInfo.Email = user.Email;
+
+                // Hash the user's password for security
+                userInfo.PasswordHash = new PasswordHasher<object>().HashPassword(user, user.Password);
+
+                // Assign a default role ID if none is provided
+                userInfo.RoleId = user.RoleId == 0 ? 3 : user.RoleId;
+
+                // Mark the user as active
+                userInfo.IsActive = true;
+
+                // Add the new user to the database
+                carParkingContext.UserInfo.Add(userInfo);
+                try
                 {
-                    FullName = user.FullName ?? throw new ArgumentNullException(nameof(user.FullName), "Full Name is required."),
-                    Email = user.Email ?? throw new ArgumentNullException(nameof(user.Email), "Email is required."),
-                    PasswordHash = new PasswordHasher<UserInfo>().HashPassword(null, user.Password ?? throw new ArgumentNullException(nameof(user.Password), "Password is required.")),
-                    RoleId = user.RoleId == 0 ? 3 : user.RoleId, // Default to role 3 if RoleId is not provided
-                    IsActive = true
-                };
-
-                // Add user to the database
-                _carParkingContext.UserInfo.Add(userInfo);
-                _carParkingContext.SaveChanges();
-
-                return new Result(true, "Registered Successfully!", user);
+                    // Save changes to the database
+                    carParkingContext.SaveChanges();
+                    return new Result(true, "Registered Successfully!", user);
+                }
+                catch (Exception ex)
+                {
+                    // Return an error if something goes wrong during database save
+                    return new Result(false, ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                return new Result(false, ex.Message);
-            }
-        }
 
+        // Handles user login
         public Result Login(string email, string password)
         {
-            try
-            {
-                // Find the user by email
-                var user = _carParkingContext.UserInfo.FirstOrDefault(u => u.Email == email);
-                if (user == null)
-                    return new Result(false, "User not found!");
+            // Initialize the database context
+            using var context = new CarParkingContext();
 
-                // Verify the hashed password
-                var passwordHasher = new PasswordHasher<object>();
-                var verificationResult = passwordHasher.VerifyHashedPassword(null, user.PasswordHash, password);
+            // Find the user by email
+            var user = context.UserInfo.FirstOrDefault(u => u.Email == email);
+            if (user == null) return new Result(false, "User not found!");
 
-                return verificationResult == PasswordVerificationResult.Success
-                    ? new Result(true, "Login successful!", user)
-                    : new Result(false, "Invalid password!");
-            }
-            catch (Exception ex)
-            {
-                return new Result(false, ex.Message);
-            }
+            // Verify the hashed password
+            var passwordHasher = new PasswordHasher<object>();
+            var verificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+
+            // Return success or failure based on password verification
+            return verificationResult == PasswordVerificationResult.Success
+                ? new Result(true, "Login successful!", user)
+                : new Result(false, "Invalid password!");
         }
-
-        public Result Update(UserForm user)
-        {
-            try
-            {
-                // Find the user by ID
-                var existingUser = _carParkingContext.UserInfo.FirstOrDefault(u => u.UserInfoId == user.UserInfoId);
-                if (existingUser == null)
-                    return new Result(false, "User not found!");
-
-                // Update user properties
-                existingUser.FullName = user.FullName ?? existingUser.FullName;
-                existingUser.Email = user.Email ?? existingUser.Email;
-                existingUser.RoleId = user.RoleId != 0 ? user.RoleId : existingUser.RoleId;
-
-                // Save changes
-                _carParkingContext.SaveChanges();
-                return new Result(true, "Updated Successfully!", existingUser);
-            }
-            catch (Exception ex)
-            {
-                return new Result(false, ex.Message);
-            }
-        }
-
         public Result List()
         {
             try
             {
-                // Retrieve all users
-                var users = _carParkingContext.UserInfo.ToList();
-                return users.Any()
-                    ? new Result(true, "User list retrieved successfully.", users)
-                    : new Result(false, "No users found.");
+                using var context = new CarParkingContext();
+                var users = context.UserInfo.ToList();
+
+                if (users.Count == 0)
+                    return new Result(false, "No users found.");
+
+                return new Result(true, "User list retrieved successfully.", users);
+            }
+            catch (Exception ex)
+            {
+                return new Result(false, ex.Message);
+            }
+        }
+        public Result Single(string userInfoId)
+        {
+            try
+            {
+                using var context = new CarParkingContext();
+                var user = context.UserInfo.FirstOrDefault(u => u.UserInfoId == userInfoId);
+
+                if (user == null)
+                    return new Result(false, "User not found.");
+
+                return new Result(true, "User retrieved successfully.", user);
             }
             catch (Exception ex)
             {
@@ -108,20 +100,5 @@ namespace Business.Services
             }
         }
 
-        public Result Single(string userInfoId)
-        {
-            try
-            {
-                // Find the user by ID
-                var user = _carParkingContext.UserInfo.FirstOrDefault(u => u.UserInfoId == userInfoId);
-                return user != null
-                    ? new Result(true, "User retrieved successfully.", user)
-                    : new Result(false, "User not found.");
-            }
-            catch (Exception ex)
-            {
-                return new Result(false, ex.Message);
-            }
-        }
     }
 }

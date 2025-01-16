@@ -2,11 +2,6 @@
 @page
 @model Web.Pages.SlotModel
 
-<!-- Search Box -->
-<div class="form-group">
-    <label for="search">Search Slots</label>
-    <input type="text" id="search" class="form-control" placeholder="Search for a slot..." onkeyup="filterSlots()" />
-</div>
 
 <h2>Available Slots</h2>
 
@@ -18,11 +13,6 @@
         <input type="number" id="Slot Id" asp-for="Slot.SlotId" class="form-control" required />
         <span asp-validation-for="Slot.SlotId" class="text-danger"></span>
      </div>
-        <div class="form-group">
-            <label for="Name">Name</label>
-            <input type="text" id="Name" asp-for="Slot.Name" class="form-control" required />
-            <span asp-validation-for="Slot.Name" class="text-danger"></span>
-        </div>
         <div class="form-group">
             <label for="Locality">Locality</label>
             <select id="Locality" asp-for="Slot.Locality" class="form-control" required>
@@ -36,8 +26,13 @@
             </select>
             <span asp-validation-for="Slot.Locality" class="text-danger"></span>
         </div>
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input type="text" id="Name" asp-for="Slot.Name" class="form-control" required />
+        <span asp-validation-for="Slot.Name" class="text-danger"></span>
+    </div>
         <div class="form-group">
-            <label for="Latest Price">Latest Price</label>
+            <label for="LatestPrice">LatestPrice</label>
             <input type="number" id="Latest Price" asp-for="Slot.LatestPrice" class="form-control" required />
             <span asp-validation-for="Slot.LatestPrice" class="text-danger"></span>
         </div>
