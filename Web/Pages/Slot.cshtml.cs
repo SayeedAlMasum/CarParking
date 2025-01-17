@@ -68,9 +68,9 @@ namespace Web.Pages
         }
 
         // OnPost method for deleting a slot
-        public IActionResult OnPostDelete(int slotId)
+        public IActionResult OnPostDelete(int id)
         {
-            var result = new SlotService().DeleteSlot(slotId);
+            var result = new SlotService().DeleteSlot(id);
             if (result.Success)
             {
                 return RedirectToPage("/Slot"); // Redirect to the course list after deletion

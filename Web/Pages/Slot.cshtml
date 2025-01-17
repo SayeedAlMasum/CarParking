@@ -60,17 +60,23 @@
             <th>Operation</th>
         </tr>
     </thead>
-    <tbody id="slotTableBody">
+    <tbody>
         @if (Model.Slots?.Any() ?? false)
         {
-            @foreach (var slot in Model.Slots)
+            @foreach (var item in Model.Slots)
             {
                 <tr>
-                    <td>@slot.SlotId</td>
-                    <td>@slot.Locality</td>
-                    <td>@slot.Name</td>
-                    <td>@slot.LatestPrice</td>
-                    <td>@slot.IsBooked ?</td>
+                    <td>@item.SlotId</td>
+                    <td>@item.Locality</td>
+                    <td>@item.Name</td>
+                    <td>@item.LatestPrice</td>
+                    <td>@item.IsBooked ?</td>
+                    <td>
+                        <a asp-page="/EditSlot" asp-route-id="@item.SlotId" class="btn btn-primary">Edit</a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@item.SlotId" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             }
         }
